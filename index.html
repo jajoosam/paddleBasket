@@ -53,6 +53,7 @@
   var planeX = 0;
   var planeY = 0;
   var score = 0;
+<<<<<<< HEAD
   var tally = 0;
   var z = false;
   function drawMan(){
@@ -60,6 +61,15 @@
   }
   function drawPlane(){
     field.drawImage(planeImage, planeX, planeY);
+=======
+  function drawBall(){
+    //Ball
+    field.beginPath();
+      field.arc(x,ballY,ballRadius, 0, 2*Math.PI, false);
+      field.fillStyle = "#FF5858";
+      field.fill();
+    field.closePath();
+>>>>>>> parent of 4859d3e... New Scoring System
   }
   function drawPaddle() {
     field.beginPath();
@@ -93,6 +103,7 @@
     if(manY > canvas.height) {
         if(manX > paddleX && manX < paddleX + paddleWidth) {
             score+=1;
+<<<<<<< HEAD
             tally+=1;
             manX = generateX();
             manY = 0;
@@ -106,6 +117,17 @@
           manY = 0;
           console.log(score);
           // document.getElementById("score").innerHTML = score+"/"+tally;
+=======
+            x = ballX();
+            ballY = 0;
+            document.getElementById("score").innerHTML = score;
+        }
+        else{
+          score-=1;
+          x = ballX();
+          ballY = 0;
+          document.getElementById("score").innerHTML = score;
+>>>>>>> parent of 4859d3e... New Scoring System
         }
       }
     if(rightPressed && paddleX < canvas.width-paddleWidth) {
