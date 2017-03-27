@@ -47,6 +47,7 @@
   var leftPressed = false;
   var rightPressed = false;
   var score = 0;
+  var tally = 0;
   function drawBall(){
     //Ball
     field.beginPath();
@@ -76,15 +77,16 @@
     if(ballY > canvas.height-ballRadius) {
         if(x > paddleX && x < paddleX + paddleWidth) {
             score+=1;
+            tally+=1;
             x = ballX();
             ballY = 0;
-            document.getElementById("score").innerHTML = score;
+            document.getElementById("score").innerHTML = score+"/"+tally;
         }
         else{
-          score-=1;
+          tally+=1;
           x = ballX();
           ballY = 0;
-          document.getElementById("score").innerHTML = score;
+          document.getElementById("score").innerHTML = score+"/"+tally;
         }
       }
     if(rightPressed && paddleX < canvas.width-paddleWidth) {
