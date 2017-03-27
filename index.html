@@ -15,10 +15,6 @@
          margin: auto;
          position: absolute;
          top: 0; left: 0; bottom: 0; right: 0;
-         border-top-style: dotted;
-         border-right-style: solid;
-         border-bottom-style: dotted;
-         border-left-style: solid;border:
        }
       h1, h2, h3{
         text-align: center;
@@ -30,38 +26,24 @@
 <h1>paddleBasket</h1>
 <h2>Score  <span id="score"></span></h2>
 <h3><em>Use arrow keys to play!</em></h3>
-<canvas id="myCanvas" width="860" height="640"></canvas>
+<canvas id="myCanvas" width="480" height="320"></canvas>
 
 <script>
   var canvas = document.getElementById("myCanvas");
   var field = canvas.getContext("2d");
   var paddleHeight = 10;
-  var paddleWidth = 120;
+  var paddleWidth = 60;
   var paddleX = (canvas.width-paddleWidth)/2;
-  var manImage = new Image();
-  manImage.src = "parachuteMan.png";
-  var planeImage = new Image();
-  planeImage.src = "airplane.png";
-  var generateX = function(){
-    return Math.floor(Math.random() * 750);
-  };
-  var manX = generateX();
-  var manY = 10;
+  var ballX = function(){
+    return Math.floor(Math.random() * 480);
+  }
+  var x = ballX();
+  var ballY = 0;
   var ballRadius = 10;
   var leftPressed = false;
   var rightPressed = false;
-  var planeX = 0;
-  var planeY = 0;
   var score = 0;
-<<<<<<< HEAD
   var tally = 0;
-  var z = false;
-  function drawMan(){
-    field.drawImage(manImage, manX, manY);
-  }
-  function drawPlane(){
-    field.drawImage(planeImage, planeX, planeY);
-=======
   function drawBall(){
     //Ball
     field.beginPath();
@@ -69,7 +51,6 @@
       field.fillStyle = "#FF5858";
       field.fill();
     field.closePath();
->>>>>>> parent of 4859d3e... New Scoring System
   }
   function drawPaddle() {
     field.beginPath();
@@ -82,52 +63,26 @@
     //Clear
     field.clearRect(0,0, canvas.width, canvas.height);
     //Draw Sprites
-    if(planeX == manX && z== false){
-      z = true;
-      console.log(manX);
-      drawMan();
-      manY+=1;
-    }
-    if(planeX > canvas.width){
-      planeX = 0;
-      z = false;
-    }
     drawPaddle();
-    drawPlane();
-    planeX+=1;
+    drawBall();
     //Change Position
-    if(manY > 10){
-      manY+=1;
-    }
+    ballY+=3;
+    if(ballY>=canvas.height-ballRadius){
 
-    if(manY > canvas.height) {
-        if(manX > paddleX && manX < paddleX + paddleWidth) {
+    }
+    if(ballY > canvas.height-ballRadius) {
+        if(x > paddleX && x < paddleX + paddleWidth) {
             score+=1;
-<<<<<<< HEAD
             tally+=1;
-            manX = generateX();
-            manY = 0;
-            console.log(score);
-            // document.getElementById("score").innerHTML = score+"/"+tally;
-        }
-        else{
-          score-=1;
-          tally+=1;
-          manX = generateX();
-          manY = 0;
-          console.log(score);
-          // document.getElementById("score").innerHTML = score+"/"+tally;
-=======
             x = ballX();
             ballY = 0;
-            document.getElementById("score").innerHTML = score;
+            document.getElementById("score").innerHTML = score+"/"+tally;
         }
         else{
-          score-=1;
+          tally+=1;
           x = ballX();
           ballY = 0;
-          document.getElementById("score").innerHTML = score;
->>>>>>> parent of 4859d3e... New Scoring System
+          document.getElementById("score").innerHTML = score+"/"+tally;
         }
       }
     if(rightPressed && paddleX < canvas.width-paddleWidth) {
@@ -137,6 +92,8 @@
       paddleX -= 4;
     }
   }
+  document.addEventListener("keydown", keyDownHandler, false);
+  document.addEventListener("keyup", keyUpHandler, false);
   function keyDownHandler(e) {
       if(e.keyCode == 39) {
           rightPressed = true;
@@ -154,10 +111,7 @@
           leftPressed = false;
       }
   }
-  document.addEventListener("keydown", keyDownHandler, false);
-  document.addEventListener("keyup", keyUpHandler, false);
-
-  setInterval(draw, 5);
+  setInterval(draw, 10);
 
 </script>
 
