@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>paddleBasket</title>
+    <link href="https://fonts.googleapis.com/css?family=Baloo+Bhaina" rel="stylesheet">
+    <style>
+       canvas{
+     	  background: #eee;
+         display: block;
+         margin: auto;
+         position: absolute;
+         top: 0; left: 0; bottom: 0; right: 0;
+         border-top-style: dotted;
+         border-right-style: solid;
+         border-bottom-style: dotted;
+         border-left-style: solid;border:
+       }
+      h1, h2, h3{
+        text-align: center;
+        font-family: 'Baloo Bhaina', cursive;
+      }
+    </style>
+</head>
+<body>
+<h1>paddleBasket</h1>
+<h2>Score  <span id="score"></span></h2>
+<h3><em>Use arrow keys to play!</em></h3>
+<canvas id="myCanvas" width="480" height="320"></canvas>
+
+<script>
+  var canvas = document.getElementById("myCanvas");
+  var field = canvas.getContext("2d");
+  var paddleHeight = 10;
+  var paddleWidth = 60;
+  var paddleX = (canvas.width-paddleWidth)/2;
+  var ballX = function(){
+    return Math.floor(Math.random() * 480);
+  }
+  var x = ballX();
+  var ballY = 0;
+  var ballRadius = 10;
+  var leftPressed = false;
+  var rightPressed = false;
+  var score = 0;
+  function drawBall(){
+    //Ball
+    field.beginPath();
+      field.arc(x,ballY,ballRadius, 0, 2*Math.PI, false);
+      field.fillStyle = "#FF5858";
+      field.fill();
+    field.closePath();
+  }
+  function drawPaddle() {
+    field.beginPath();
+      field.rect(paddleX, canvas.height-paddleHeight, paddleWidth, paddleHeight);
+      field.fillStyle = "#03A6FF";
+      field.fill();
+    field.closePath();
+  }
+  function draw() {
+    //Clear
+    field.clearRect(0,0, canvas.width, canvas.height);
+    //Draw Sprites
+    drawPaddle();
+    drawBall();
+    //Change Position
+    ballY+=3;
+    if(ballY>=canvas.height-ballRadius){
+
+    }
+    if(ballY > canvas.height-ballRadius) {
+        if(x > paddleX && x < paddleX + paddleWidth) {
+            score+=1;
+            x = ballX();
+            ballY = 0;
+            document.getElementById("score").innerHTML = score;
+        }
+        else{
+          score-=1;
+          x = ballX();
+          ballY = 0;
+          document.getElementById("score").innerHTML = score;
+        }
+      }
+    if(rightPressed && paddleX < canvas.width-paddleWidth) {
+      paddleX += 4;
+    }
+    else if(leftPressed && paddleX > 0) {
+      paddleX -= 4;
+    }
+  }
+  document.addEventListener("keydown", keyDownHandler, false);
+  document.addEventListener("keyup", keyUpHandler, false);
+  function keyDownHandler(e) {
+      if(e.keyCode == 39) {
+          rightPressed = true;
+      }
+      else if(e.keyCode == 37) {
+          leftPressed = true;
+      }
+  }
+
+  function keyUpHandler(e) {
+      if(e.keyCode == 39) {
+          rightPressed = false;
+      }
+      else if(e.keyCode == 37) {
+          leftPressed = false;
+      }
+  }
+  setInterval(draw, 10);
+
+</script>
+
+</body>
+</html>
