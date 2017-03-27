@@ -26,31 +26,35 @@
 <h1>paddleBasket</h1>
 <h2>Score  <span id="score"></span></h2>
 <h3><em>Use arrow keys to play!</em></h3>
-<canvas id="myCanvas" width="480" height="320"></canvas>
+<canvas id="myCanvas" width="860" height="640"></canvas>
 
 <script>
   var canvas = document.getElementById("myCanvas");
   var field = canvas.getContext("2d");
   var paddleHeight = 10;
-  var paddleWidth = 60;
+  var paddleWidth = 120;
   var paddleX = (canvas.width-paddleWidth)/2;
-  var ballX = function(){
-    return Math.floor(Math.random() * 480);
-  }
-  var x = ballX();
-  var ballY = 0;
+  var manImage = new Image();
+  manImage.src = "parachuteMan.png";
+  var planeImage = new Image();
+  planeImage.src = "airplane.png";
+  var generateX = function(){
+    return Math.floor(Math.random() * 750);
+  };
+  var manX = generateX();
+  var manY = 0;
   var ballRadius = 10;
   var leftPressed = false;
   var rightPressed = false;
+  var planeX = 0;
+  var planeY = 0;
   var score = 0;
   var tally = 0;
-  function drawBall(){
-    //Ball
-    field.beginPath();
-      field.arc(x,ballY,ballRadius, 0, 2*Math.PI, false);
-      field.fillStyle = "#FF5858";
-      field.fill();
-    field.closePath();
+  function drawMan(){
+    field.drawImage(manImage, manX, manY);
+  }
+  function drawPlane(){
+    field.drawImage(planeImage, planeX, planeY);
   }
   function drawPaddle() {
     field.beginPath();
@@ -63,26 +67,35 @@
     //Clear
     field.clearRect(0,0, canvas.width, canvas.height);
     //Draw Sprites
-    drawPaddle();
-    drawBall();
-    //Change Position
-    ballY+=3;
-    if(ballY>=canvas.height-ballRadius){
-
+    if(planeX == manX){
+      console.log(manX);
+      drawMan();
+      manY+=1;
     }
-    if(ballY > canvas.height-ballRadius) {
-        if(x > paddleX && x < paddleX + paddleWidth) {
+    if(planeX > canvas.width){
+      planeX = 0;
+    }
+    drawPaddle();
+    drawPlane();
+    planeX+=1;
+    //Change Position
+    manY+=1;
+    if(manY > canvas.height) {
+        if(manX > paddleX && manX < paddleX + paddleWidth) {
             score+=1;
             tally+=1;
-            x = ballX();
-            ballY = 0;
-            document.getElementById("score").innerHTML = score+"/"+tally;
+            manX = generateX();
+            manY = 0;
+            console.log(score);
+            // document.getElementById("score").innerHTML = score+"/"+tally;
         }
         else{
+          score-=1;
           tally+=1;
-          x = ballX();
-          ballY = 0;
-          document.getElementById("score").innerHTML = score+"/"+tally;
+          manX = generateX();
+          manY = 0;
+          console.log(score);
+          // document.getElementById("score").innerHTML = score+"/"+tally;
         }
       }
     if(rightPressed && paddleX < canvas.width-paddleWidth) {
@@ -92,8 +105,6 @@
       paddleX -= 4;
     }
   }
-  document.addEventListener("keydown", keyDownHandler, false);
-  document.addEventListener("keyup", keyUpHandler, false);
   function keyDownHandler(e) {
       if(e.keyCode == 39) {
           rightPressed = true;
@@ -111,7 +122,10 @@
           leftPressed = false;
       }
   }
-  setInterval(draw, 10);
+  document.addEventListener("keydown", keyDownHandler, false);
+  document.addEventListener("keyup", keyUpHandler, false);
+
+  setInterval(draw, 5);
 
 </script>
 
