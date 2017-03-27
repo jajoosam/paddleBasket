@@ -42,7 +42,7 @@
     return Math.floor(Math.random() * 750);
   };
   var manX = generateX();
-  var manY = 0;
+  var manY = 10;
   var ballRadius = 10;
   var leftPressed = false;
   var rightPressed = false;
@@ -50,6 +50,7 @@
   var planeY = 0;
   var score = 0;
   var tally = 0;
+  var z = false;
   function drawMan(){
     field.drawImage(manImage, manX, manY);
   }
@@ -67,19 +68,24 @@
     //Clear
     field.clearRect(0,0, canvas.width, canvas.height);
     //Draw Sprites
-    if(planeX == manX){
+    if(planeX == manX && z== false){
+      z = true;
       console.log(manX);
       drawMan();
       manY+=1;
     }
     if(planeX > canvas.width){
       planeX = 0;
+      z = false;
     }
     drawPaddle();
     drawPlane();
     planeX+=1;
     //Change Position
-    manY+=1;
+    if(manY > 10){
+      manY+=1;
+    }
+
     if(manY > canvas.height) {
         if(manX > paddleX && manX < paddleX + paddleWidth) {
             score+=1;
