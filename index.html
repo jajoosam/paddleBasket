@@ -44,6 +44,7 @@
   var rightPressed = false;
   var score = 0;
   var tally = 0;
+  var done = false;
   function drawBall(){
     //Ball
     field.beginPath();
@@ -84,6 +85,11 @@
           ballY = 0;
           document.getElementById("score").innerHTML = score+"/"+tally;
         }
+      }
+      if(tally === 50 && done==false){
+        done = true;
+        alert("Game over! You got "+score+" out of 50 :)\nPress OK to restart!\nKeep Trying yo!");
+        window.location.reload(false);
       }
     if(rightPressed && paddleX < canvas.width-paddleWidth) {
       paddleX += 4;
